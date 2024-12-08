@@ -17,7 +17,7 @@
                     <a href="#link_to_home">Home</a>
                     <a href="#link_services">Services</a>
                     <a href="#link_plans">Plan & Price</a>
-                    <a href="#contact_us">Contact Us</a>
+                    <a href="./chat.html">AI Assistant</a>
                 </div>
                 <div class="right-links">
                     <a class="login" href="login.html">Login</a>
