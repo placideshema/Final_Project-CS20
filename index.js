@@ -35,6 +35,7 @@ app.post("/chat", async (req, res) => {
     const { userMessage } = req.body;
 
     if (!userMessage) {
+        console.log("The message was empty");
         return res.status(400).json({ error: "Message cannot be empty." });
     }
 
@@ -49,6 +50,7 @@ app.post("/chat", async (req, res) => {
         const completion = await requestOpenAi(messages);
         res.json({ reply: completion });
     } catch (error) {
+        console.log("There was a problem error code 500");
         console.error("Error:", error.message);
         res.status(500).json({ error: "Failed to generate response." });
     }
