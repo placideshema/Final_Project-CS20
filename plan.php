@@ -1,7 +1,6 @@
 <?php
 // Create connection
-$conn = new mysqli("127.0.0.1","u3eymopnjvlvl","zxiskr5xjjhb","dbleduyhbuunlf");
-// Check connection
+$conn = new mysqli("oheneamankwaahn.sgedu.site.mysql", "u3eymopnjvlvl", "zxiskr5xjjhb", "dbleduyhbuunlf");// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
