@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Financial Advisory website</title>
         <link rel="stylesheet" href="stylesheet.css">
+        <link rel="stylesheet" href="contact_style.css">
+        <link rel="stylesheet" href="header_style.css">
         <link rel="icon" href="amasikaLogo.jpg" type="image/jpg">
     </head>
     <body>
@@ -17,11 +19,12 @@
                     <a href="#link_to_home">Home</a>
                     <a href="#link_services">Services</a>
                     <a href="#link_plans">Plan & Price</a>
-                    <a href="./chat.html">AI Assistant</a>
+                    <a href="login.html">Financial Calculator</a>
+                    <a href="login.html">AI Assistant</a>
                 </div>
                 <div class="right-links">
-                    <a class="login" href="login.html">Login</a>
-                    <a class="sign-up" href="sign-up.html">Sign-Up</a>
+                    <a href="login.html" class="login"> Login</a>
+                    <a class="sign-up" href="sign_up.html">Sign-Up</a>
                 </div>
             </nav>
         </div>
@@ -76,10 +79,6 @@
             <span class="dot" onclick="currentSlide(4)"></span>
             <span class="dot" onclick="currentSlide(5)"></span>
             <span class="dot" onclick="currentSlide(6)"></span>
-        </div>
-        <div class="timer">
-            <h2>Promo Plans: </h2>
-            <p id="timer"></p>
         </div>
         <div id="about-us">
             <h1>Amasika Advisory</h1>
@@ -184,5 +183,9 @@
 
             <p>We look forward to hearing from you!</p>
         </div>
+        <footer>
+            <p>&copy; 2024 Amasika Advisory. All rights reserved.</p>
+            <p>Contact: <a href="mailto:info@amasikaadvisory.com">info@amasikaadvisory.com</a></p>
+        </footer>
     </body>
-</html>
+</html> 

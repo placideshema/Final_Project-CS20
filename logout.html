@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .logout-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .logout-container img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-container">
+        <a href="#link_to_home"><img id="logo" src="amasikaLogo.jpg" alt="logo"></a>
+        <h2>Logout</h2>
+        <p class="message">
+            <span id="user-firstName" style="color: darkblue; font-weight: bold; font-size: 1.2em;"></span>, 
+            Are you sure you want to leave? &#128546;
+        </p>
+        <button id="confirmLogout" class="btn">Confirm Logout</button>
+        <button id="cancelLogout" class="btn" style="background-color: #f44336;">Cancel</button>
+    </div>
+    <script src="manage_session.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("here");
+            const user_data = SessionManager.getUserInfo();
+            console.log(user_data);
+            if (user_data && user_data.user_firstname) {
+                document.getElementById('user-firstName').textContent = user_data.user_firstname;
+            } else {
+                console.error('First name not found in user data.');
+            }
+        });
+    </script>
+    <script>
+        // Logout functionality
+        function performLogout() {
+            // Clear all authentication-related storage
+            localStorage.removeItem('authToken');
+            sessionStorage.removeItem('userInfo');
+            
+            //celar some other storage
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // Redirect to login page
+            window.location.href = 'login.html';
+        }
+
+        // Event Listeners
+        document.getElementById('confirmLogout').addEventListener('click', function() {
+            performLogout();
+        });
+
+        document.getElementById('cancelLogout').addEventListener('click', function() {
+            // Redirect back to previous page or dashboard
+            window.location.href = 'home.php';
+        });
+
+        // Using Add keyboard support for Enter and Escape keys
+        document.addEventListener('keydown', function(event) {
+            // Enter key on confirm button
+            if (event.key === 'Enter') {
+                document.getElementById('confirmLogout').click();
+            }
+            
+            // Escape key to cancel
+            if (event.key === 'Escape') {
+                document.getElementById('cancelLogout').click();
+            }
+        });
+    </script>
+</body>
+</html>

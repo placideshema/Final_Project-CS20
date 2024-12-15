@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Retirement Plan Advisor</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            padding: 20px;
+        }
+        .advisor-container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4facfe;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        form div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .charts-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .chart {
+            flex: 1;
+            max-width: 48%;
+        }
+        #comments {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 14px;
+        }
+                
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: #4facfe;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="advisor-container">
+    <h1>Financial Calculator</h1>
+    <form id="retirement-form">
+        <div>
+            <label for="currentAge">Current Age:</label>
+            <input type="number" id="currentAge" required>
+        </div>
+        <div>
+            <label for="retirementAge">Desired Retirement Age:</label>
+            <input type="number" id="retirementAge" required>
+        </div>
+        <div>
+            <label for="currentSavings">Current Savings (USD):</label>
+            <input type="number" id="currentSavings" required>
+        </div>
+        <div>
+            <label for="monthlyContribution">Monthly Savings Contribution (USD):</label>
+            <input type="number" id="monthlyContribution" required>
+        </div>
+        <div>
+            <label for="monthlyExpenses">Monthly Earnings (USD):</label>
+            <input type="number" id="monthlyExpenses" required>
+        </div>
+        <div>
+            <label for="monthlyEarnings">Monthly Earnings (USD):</label>
+            <input type="number" id="monthlyEarnings" required>
+        </div>
+        <div>
+            <label for="rateOfReturn">Expected Annual Rate of Return (%):</label>
+            <input type="number" id="rateOfReturn" required>
+        </div>
+        <div>
+            <label for="targetSavings">Target Savings at Retirement (USD):</label>
+            <input type="number" id="targetSavings" required>
+        </div>
+        <button type="button" onclick="calculateAndVisualize()">Calculate and Visualize</button>
+    </form>
+    <div class="charts-container">
+        <div id="donutChart" class="chart"></div>
+        <div id="lineChart" class="chart"></div>
+    </div>
+    <div id="comments"></div>
+</div>
+
+    <script>
+    function calculateAndVisualize() {
+        // Get input values
+        const currentAge = parseInt(document.getElementById('currentAge').value);
+        const retirementAge = parseInt(document.getElementById('retirementAge').value);
+        const currentSavings = parseFloat(document.getElementById('currentSavings').value);
+        const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
+        const monthlyExpenses = parseFloat(document.getElementById('monthlyExpenses').value);
+        const monthlyEarnings = parseFloat(document.getElementById('monthlyEarnings').value);
+        const rateOfReturn = parseFloat(document.getElementById('rateOfReturn').value) / 100;
+        const targetSavings = parseFloat(document.getElementById('targetSavings').value);
+
+        if (isNaN(currentAge) || isNaN(retirementAge) || isNaN(currentSavings) || isNaN(monthlyContribution) || isNaN(monthlyEarnings) || isNaN(rateOfReturn) || isNaN(targetSavings)) {
+            alert('Please fill in all fields correctly.');
+            return;
+        }
+
+        // Calculate years until retirement
+        const yearsUntilRetirement = retirementAge - currentAge;
+
+        // Calculate total savings at retirement using compound interest formula
+        let totalSavings = currentSavings;
+        const savingsGrowth = [];
+        for (let i = 0; i < yearsUntilRetirement * 12; i++) {
+            totalSavings += monthlyContribution;
+            totalSavings *= (1 + rateOfReturn / 12);
+            if (i % 12 === 0) savingsGrowth.push(totalSavings.toFixed(2)); 
+        }
+
+        // Calculate annual expenses as the difference between earnings and savings contributions
+        const annualSavings = monthlyContribution * 12;
+        const annualEarnings = monthlyEarnings * 12;
+        const annualExpenses = annualEarnings - annualSavings;
+
+        // Prepare data for the donut chart
+        const labels = ["Savings at Retirement", "Total Earnings", "Annual Expenses"];
+        const values = [
+            totalSavings.toFixed(2),
+            (annualEarnings * yearsUntilRetirement).toFixed(2),
+            (annualExpenses * yearsUntilRetirement).toFixed(2)
+        ];
+
+        const donutData = [{
+            labels: labels,
+            values: values,
+            type: "pie",
+            hole: 0.4,
+            textinfo: "label+percent",
+            marker: {
+                colors: ["#4caf50", "#ff9800", "#f44336"]
+            }
+        }];
+
+        const donutLayout = {
+            title: "Retirement Plan Distribution",
+            height: 400,
+            width: 400
+        };
+
+        // Render the donut chart
+        Plotly.newPlot("donutChart", donutData, donutLayout);
+
+        // Prepare data for the line chart
+        const lineData = [{
+            x: Array.from({ length: yearsUntilRetirement + 1 }, (_, i) => currentAge + i),
+            y: savingsGrowth,
+            type: "scatter",
+            mode: "lines+markers",
+            name: "Savings Growth",
+            line: { color: "#4facfe" }
+        }];
+
+        const lineLayout = {
+            title: "Savings Growth Over Time",
+            xaxis: { title: "Age" },
+            yaxis: { title: "Savings (USD)" },
+            height: 400,
+            width: 400
+        };
+
+        // Render the line chart
+        Plotly.newPlot("lineChart", lineData, lineLayout);
+
+        // Generate comments based on results
+        const comments = document.getElementById("comments");
+        
+         let feedbackMessage = "";
+
+         if (totalSavings >= targetSavings) {
+             feedbackMessage = `
+                 <p><span style="color: green;">Congratulations!</span> You have met your target savings of $${targetSavings.toFixed(2)}.</p>`;
+         } else {
+             feedbackMessage = `
+                 <p><span style="color: red;">Warning:</span> You have not met your target savings of $${targetSavings.toFixed(2)}. 
+                 Consider increasing your monthly contributions or reducing expenses.</p>`;
+         }
+
+         comments.innerHTML = `
+             <h3>Retirement Insights</h3>
+             <p>You have <strong>${yearsUntilRetirement} years</strong> until retirement.</p>
+             <p>Your total savings at retirement will be <strong>$${totalSavings.toFixed(2)}</strong>.</p>
+             ${feedbackMessage}
+         `;
+    }
+</script>
+    <footer>
+        <p>&copy; 2024 Amasika Advisory. All rights reserved.</p>
+        <p>Contact: <a href="mailto:info@amasikaadvisory.com">info@amasikaadvisory.com</a></p>
+    </footer>
+</body>
+</html>

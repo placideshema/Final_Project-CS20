@@ -1,0 +1,94 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+.contact_container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact_container h1 {
+    color: rgb(22, 4, 101);
+    margin-bottom: 1rem;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.contact_container > p {
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.contact-department {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.contact-department:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: rgb(103, 156, 247);
+}
+
+.contact-department .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.contact-department h4 {
+    color: rgb(22, 4, 101);
+    margin-bottom: 0.5rem;
+}
+
+.contact-department p {
+    color: #666;
+    margin: 0.25rem 0;
+}
+
+@media (min-width: 768px) {
+    .contact_container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .contact_container h1 {
+        grid-column: 1 / -1;
+    }
+
+    .contact_container > p:first-of-type,
+    .contact_container > p:last-of-type {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 767px) {
+    .contact_container {
+        padding: 1rem;
+    }
+
+    .contact-department {
+        margin-bottom: 1rem;
+    }
+}
